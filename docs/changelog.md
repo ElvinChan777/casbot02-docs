@@ -1,14 +1,24 @@
-# 更新日志
+# 发布说明
 
-本文件记录 CASBOT02 二次开发文档和 SDK 的重要变更。
+## v1.0.0 (当前版本)
 
-## [Unreleased]
+基于 [CasbotRobotics/casbot2-ros2-sdk](https://github.com/CasbotRobotics/casbot2-ros2-sdk) 构建。
 
-### 新增
+### 包含内容
 
-- 在线文档站点初始化
-- 迁移飞书 wiki 文档内容至 MkDocs
-- 支持 C++ / Python 双语言代码示例
-- 支持多版本文档管理
+- C++ / Python ROS 2 示例工程
+- 二次开发与运动控制文档
+- 接口全覆盖调用示例（Service / Topic / Action）
+- 开机自检、仿真联调、实机联调操作指引
 
-<!-- 后续版本在此处添加变更记录 -->
+### 已清理项
+
+- 未包含内网 Git 地址
+- 未包含仅内部可用的服务地址
+- 未包含机器专属账号或凭据
+
+### 使用前提
+
+- 机器人软件版本与接口文档一致
+- crb_ros_msg 可在本地环境正常解析
+- 使用者具备 ROS 2 Humble 基础

@@ -1,81 +1,63 @@
-# 快速上手
+# 五分钟上手
 
-5 分钟内跑通你的第一个 CASBOT02 二开程序。
+本页引导你从零运行第一个 CASBOT2 二开示例。
 
-## 目标
+## 1. 克隆 SDK 仓库
 
-编写一个 Python 节点，订阅 CASBOT02 的关节状态并在终端打印。
+```bash
+git clone https://github.com/CasbotRobotics/casbot2-ros2-sdk.git
+cd casbot2-ros2-sdk
+```
 
-## 步骤
-
-### 1. 确认网络连通
+## 2. 编译消息包
 
 ```bash
 source /opt/ros/humble/setup.bash
-export ROS_DOMAIN_ID=<机器人 domain id>
-
-# 应能看到 /joint_states 等 topic
-ros2 topic list
-```
-
-### 2. 创建工作空间
-
-```bash
-mkdir -p ~/casbot_demo/src && cd ~/casbot_demo/src
-ros2 pkg create --build-type ament_python casbot_demo --dependencies rclpy sensor_msgs
-```
-
-### 3. 编写订阅节点
-
-创建 `casbot_demo/casbot_demo/joint_monitor.py`：
-
-```python
-import rclpy
-from rclpy.node import Node
-from sensor_msgs.msg import JointState
-
-
-class JointMonitor(Node):
-    def __init__(self):
-        super().__init__('joint_monitor')
-        self.sub = self.create_subscription(
-            JointState,
-            '/joint_states',
-            self.callback,
-            10
-        )
-        self.get_logger().info('关节状态监听已启动')
-
-    def callback(self, msg: JointState):
-        for name, pos in zip(msg.name, msg.position):
-            self.get_logger().info(f'{name}: {pos:.4f} rad')
-
-
-def main():
-    rclpy.init()
-    node = JointMonitor()
-    rclpy.spin(node)
-    node.destroy_node()
-    rclpy.shutdown()
-
-
-if __name__ == '__main__':
-    main()
-```
-
-### 4. 构建运行
-
-```bash
-cd ~/casbot_demo
-colcon build
+colcon build --packages-select crb_ros_msg
 source install/setup.bash
-ros2 run casbot_demo joint_monitor
 ```
 
-如果终端开始输出关节角度数据，恭喜你完成了第一个 CASBOT02 二开程序！
+## 3. 运行 Python 示例
+
+```bash
+cd examples/python
+colcon build --packages-select casbot2_py_demo
+source install/setup.bash
+ros2 run casbot2_py_demo control_demo
+```
+
+## 4. 运行 C++ 示例
+
+```bash
+cd examples/workflows/cpp/casbot_cpp_test
+colcon build --packages-select casbot_cpp_test
+source install/setup.bash
+ros2 run casbot_cpp_test t01_get_state
+```
+
+## 5. 使用接口全覆盖工具
+
+SDK 提供了一个命令行工具，可快速测试所有接口：
+
+```bash
+python3 examples/interfaces/python/all_interfaces_demo.py --help
+```
+
+示例：
+
+```bash
+# 查询机器人模式
+python3 examples/interfaces/python/all_interfaces_demo.py get_robot_mode
+
+# 发送行走指令（前进 2 秒）
+python3 examples/interfaces/python/all_interfaces_demo.py pub_cmd_vel --vx 0.2 --wz 0.0 --seconds 2
+
+# 执行挥手动作
+python3 examples/interfaces/python/all_interfaces_demo.py basic_action_play --type wave_hand
+```
 
 ## 下一步
 
-- [SDK 接口总览](../sdk/overview.md) — 了解所有可用接口
-- [行走控制](../motion-control/walking.md) — 让机器人走路
-- [预设技能](../sdk/skills/preset-skills.md) — 调用内置动作
+- [接口总览](../guide/overview.md) — 了解所有可用接口
+- [示例总览](../examples/demos/overview.md) — 查看更多示例
+- [开机自检](../examples/scenarios/boot-check.md) — 实机调试前的检查流程

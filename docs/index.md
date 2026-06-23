@@ -1,111 +1,48 @@
----
-hide:
-  - navigation
----
+# CASBOT2 二次开发文档
 
-# CASBOT02 二次开发文档
+CASBOT2 人形机器人的 ROS 2 二次开发文档。本仓库基于 CasbotRobotics 官方 SDK 构建。
 
-<div class="hero" markdown>
-
-**CASBOT02** 是一款身高 160cm、体重 50kg 的通用人形机器人。
-
-基于 **ROS2** 的开放架构，支持 **Python** 和 **C++** 双语言二次开发。
-
-[:material-rocket-launch: 快速开始](getting-started/overview.md){ .md-button .md-button--primary }
-[:material-book-open-variant: SDK 接口](sdk/overview.md){ .md-button }
-
-</div>
+[:material-rocket-launch: 快速开始](getting-started/quickstart.md){ .md-button .md-button--primary }
+[:material-api: 接口总览](guide/overview.md){ .md-button }
+[:material-github: GitHub 仓库](https://github.com/CasbotRobotics/casbot2-ros2-sdk){ .md-button }
 
 ---
 
-## 功能概览
+## 核心接口一览
 
-<div class="grid cards" markdown>
-
--   :material-robot:{ .lg .middle } **硬件参考**
-
-    ---
-
-    整机结构、传感器感知范围、关节活动角度
-
-    [:octicons-arrow-right-24: 查看详情](hardware/robot-structure.md)
-
--   :material-api:{ .lg .middle } **SDK 接口**
-
-    ---
-
-    ROS2 Topic / Service / Action 接口文档
-
-    语音对话 · 预设技能 · 传感器数据
-
-    [:octicons-arrow-right-24: 查看详情](sdk/overview.md)
-
--   :material-motion-outline:{ .lg .middle } **运控开发**
-
-    ---
-
-    行走控制、关节控制、强化学习运控
-
-    支持下肢 / 上身 / 全身三种控制粒度
-
-    [:octicons-arrow-right-24: 查看详情](motion-control/walking.md)
-
--   :material-cog:{ .lg .middle } **技能定制**
-
-    ---
-
-    自定义动作数据 + 音频播放
-
-    支持动画设计软件 / RViz 生成运动轨迹
-
-    [:octicons-arrow-right-24: 查看详情](sdk/skills/custom-skills.md)
-
-</div>
+| 类型 | 名称 | 接口类型 | 说明 |
+|---|---|---|---|
+| Service | get_robot_mode | crb_ros_msg/srv/GetRobotMode | 查询当前机器人模式 |
+| Service | /set_robot_mode | crb_ros_msg/srv/SetRobotMode | 设置机器人模式 (ZERO/STAND/WALK) |
+| Service | /motion/upper_body_debug | std_srvs/srv/SetBool | 上身调试模式开关 |
+| Service | /motion/whole_body_debug | std_srvs/srv/SetBool | 全身调试模式开关 |
+| Service | /motion/switch_nav_mode | std_srvs/srv/SetBool | 导航模式开关 |
+| Service | /voice_svr | crb_ros_msg/srv/Voice | 语音对话 |
+| Service | /casbot/event_service | crb_ros_msg/srv/ActionEvent | 技能触发 |
+| Topic | /navigation/cmd_vel | geometry_msgs/msg/Twist | 行走速度控制 |
+| Topic | /upper_body_debug/joint_cmd | crb_ros_msg/msg/UpperJointData | 上身关节控制 |
+| Topic | /motion/joint_cmd | crb_ros_msg/msg/JointStateData | 全身关节控制 |
+| Topic | /motion/joint_state | crb_ros_msg/msg/JointStateData | 全身关节状态反馈 |
+| Topic | /joint_states | sensor_msgs/msg/JointState | 标准关节状态 |
+| Action | /basic_action_play | crb_ros_msg/action/BasicActionPlay | 预设动作播放 |
+| Action | /action_voice_play | crb_ros_msg/action/VoicePlay | 音频播放 |
 
 ---
 
-## 通信架构
+## 安全提示
 
-```mermaid
-graph LR
-    A[二次开发程序] -->|Topic| B[CASBOT02]
-    B -->|Topic| A
-    A -->|Service Call| B
-    A -->|Action Goal| B
-
-    subgraph Topic
-        C[关节控制数据]
-        D[IMU 数据]
-        E[RGBD 相机数据]
-        F[遥控器数据]
-    end
-
-    subgraph Service
-        G[执行技能行为树]
-        H[语音对话开关]
-        I[状态切换]
-    end
-
-    subgraph Action
-        J[语音播报]
-    end
-```
-
-| 通讯方式 | 方向 | 用途 |
-|---|---|---|
-| **Topic** | CASBOT02 → 开发者 | 关节状态、IMU 数据、RGBD 相机数据 |
-| **Topic** | 开发者 → CASBOT02 | 关节控制数据、遥控器数据 |
-| **Service** | 开发者 → CASBOT02 | 技能行为树、语音对话开关、状态切换 |
-| **Action** | 开发者 → CASBOT02 | 语音播报 |
+!!! danger "调试安全须知"
+    - 首次联调请从**低速、小幅度**关节指令开始
+    - 每次发控制命令前先**确认当前模式**
+    - 调试模式需有**安全员在场**，确保急停可用
 
 ---
 
-## 依赖包
+## 环境要求
 
-CASBOT02 的 ROS2 自定义消息包：
-
-| 包名 | 说明 |
+| 项目 | 要求 |
 |---|---|
-| `crb_ros_msg` | 包含所有自定义消息/服务/动作类型 |
-
-<!-- TODO: 补充依赖包的安装方式和下载链接 -->
+| 操作系统 | Ubuntu 22.04 |
+| ROS2 版本 | Humble Hawksbill |
+| 依赖包 | crb_ros_msg (仓库内置) |
+| SDK 源码 | [casbot2-ros2-sdk](https://github.com/CasbotRobotics/casbot2-ros2-sdk) |

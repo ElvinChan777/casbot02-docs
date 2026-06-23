@@ -1,22 +1,14 @@
-site_name: CASBOT02 二次开发文档
-site_description: CASBOT02 人形机器人 ROS2 二次开发指南
+site_name: CASBOT2 二次开发文档
+site_description: CASBOT2 人形机器人 ROS2 二次开发指南
 site_url: https://casbot02.readthedocs.io
 repo_url: https://github.com/ElvinChan777/casbot02-docs
 repo_name: ElvinChan777/casbot02-docs
 edit_uri: edit/main/docs/
 
-# ============================================================================
-# 主题配置
-# ============================================================================
 theme:
   name: material
   language: zh
-  logo: assets/logo.png
-  favicon: assets/favicon.png
-  icon:
-    repo: fontawesome/brands/github
   palette:
-    # 亮色模式
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: indigo
@@ -24,7 +16,6 @@ theme:
       toggle:
         icon: material/brightness-7
         name: 切换至暗色模式
-    # 暗色模式
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
@@ -33,34 +24,26 @@ theme:
         icon: material/brightness-4
         name: 切换至亮色模式
   features:
-    # 代码块
-    - content.code.copy           # 一键复制
-    - content.code.annotate       # 代码注解
-    # Tab 联动（C++/Python 同步切换）
+    - content.code.copy
+    - content.code.annotate
     - content.tabs.link
-    # 导航
-    - navigation.tabs             # 顶部一级导航 Tab
-    - navigation.tabs.sticky      # Tab 吸顶
-    - navigation.sections         # 侧边栏分组标题
-    - navigation.expand           # 展开所有子菜单
-    - navigation.top              # 返回顶部按钮
-    - navigation.instant          # 即时加载（SPA 体验）
-    - navigation.tracking         # URL 跟踪当前标题
-    # 搜索
-    - search.suggest              # 搜索建议
-    - search.highlight            # 搜索命中高亮
-    - search.share                # 搜索分享
-    # 页尾
-    - toc.follow                  # 右侧目录跟随滚动
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.instant
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - search.share
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
 
-# ============================================================================
-# 插件配置
-# ============================================================================
 plugins:
   - search
-  # Mermaid 图表渲染
   - mermaid2
-  # API 文档自动生成（从 Python docstring 提取）
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -69,22 +52,11 @@ plugins:
             show_source: true
             show_root_heading: true
             heading_level: 3
-  # Git 修订日期
   - git-revision-date-localized:
       type: datetime
       locale: zh
-  # 自动生成 API 参考页面
-  - gen-files:
-      scripts:
-        - docs/gen_api_pages.py
-  - literate-nav:
-      nav_file: SUMMARY.md
 
-# ============================================================================
-# Markdown 扩展
-# ============================================================================
 markdown_extensions:
-  # 代码高亮 & 围栏块
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span
@@ -94,98 +66,57 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-  # ★ C++ / Python Tab 切换（核心功能）
   - pymdownx.tabbed:
       alternate_style: true
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
-  # 提示框
   - admonition
   - pymdownx.details
-  # 折叠/摘要
   - pymdownx.snippets:
       base_path:
         - snippets
-  # 表格
   - tables
-  # 属性列表
   - attr_list
-  # HTML 内嵌 Markdown
   - md_in_html
-  # Emoji
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
-  # 目录
   - toc:
       permalink: true
       toc_depth: 3
-  # 键盘按键
   - pymdownx.keys
-  # 任务列表
   - pymdownx.tasklist:
       custom_checkbox: true
-  # 数学公式
-  - pymdownx.arithmatex:
-      generic: true
 
-# ============================================================================
-# 额外 JS（数学公式支持）
-# ============================================================================
-extra_javascript:
-  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
-
-# ============================================================================
-# 额外样式
-# ============================================================================
 extra_css:
   - assets/extra.css
 
-# ============================================================================
-# 全局变量
-# ============================================================================
 extra:
   version:
-    provider: mike           # 多版本管理工具
-  social:
-    - icon: fontawesome/brands/github
-      link: https://github.com/ElvinChan777/casbot02-docs
-  generator: false
+    provider: mike
 
-# ============================================================================
-# 导航结构
-# ============================================================================
 nav:
   - 首页: index.md
   - 快速开始:
-      - 概述: getting-started/overview.md
-      - 环境搭建: getting-started/environment-setup.md
-      - URDF 模型: getting-started/urdf.md
-      - 快速上手: getting-started/quickstart.md
-  - 硬件参考:
-      - 整机结构: hardware/robot-structure.md
-      - 传感器: hardware/sensors.md
-      - 关节参数: hardware/joints.md
-  - SDK 接口:
-      - 总览: sdk/overview.md
-      - 语音:
-          - 对话接口: sdk/voice/dialogue.md
-          - 音频播放: sdk/voice/audio-playback.md
-      - 技能:
-          - 预设技能: sdk/skills/preset-skills.md
-          - 技能定制: sdk/skills/custom-skills.md
-      - 传感器数据:
-          - 相机: sdk/sensors/camera.md
-          - IMU: sdk/sensors/imu.md
-          - 关节状态: sdk/sensors/joint-states.md
-          - 激光雷达: sdk/sensors/lidar.md
-      - 头显协议: sdk/head-display.md
-  - 运控开发:
-      - 下肢行走: motion-control/walking.md
-      - 上身关节: motion-control/upper-body.md
-      - 全身关节: motion-control/whole-body.md
-      - 强化学习: motion-control/rl-control.md
+    - 环境准备: getting-started/environment.md
+    - 五分钟上手: getting-started/quickstart.md
+    - 消息包使用指南: getting-started/message-package.md
+  - 开发指南:
+    - 接口总览: guide/overview.md
+    - 模式与状态: guide/mode-and-state.md
+    - 运动控制: guide/motion-control.md
+    - 语音交互: guide/voice.md
+    - 技能与动作: guide/skills.md
+    - 传感器数据: guide/sensors.md
   - API 参考:
-      - ROS2 消息类型: api/ros2-messages.md
-  - 更新日志: changelog.md
+    - 消息类型 (msg): api/messages/index.md
+    - 服务类型 (srv): api/services/index.md
+    - 动作类型 (action): api/actions/index.md
+  - 示例与场景:
+    - 示例总览: examples/demos/overview.md
+    - 接口全覆盖工具: examples/demos/all-interfaces.md
+    - 开机自检: examples/scenarios/boot-check.md
+    - 仿真联调: examples/scenarios/simulation.md
+    - 实机联调: examples/scenarios/real-robot.md
+  - 发布说明: changelog.md
