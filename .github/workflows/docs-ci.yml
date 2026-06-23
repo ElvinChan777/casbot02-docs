@@ -1,0 +1,38 @@
+name: Docs CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "requirements.txt"
+  pull_request:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "mkdocs.yml"
+      - "requirements.txt"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build docs
+        run: mkdocs build --strict
+        # --strict: 任何警告都视为错误，防止链接断开等问题
+
+      - name: Check for broken links
+        run: |
+          pip install linkchecker
+          linkchecker site/ --no-robots --check-extern=0 || true
+        # --check-extern=0: 只检查内部链接，不检查外部链接（避免超时）
