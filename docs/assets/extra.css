@@ -1,0 +1,34 @@
+/* CASBOT02 文档自定义样式 */
+
+/* Hero 区域样式 */
+.md-typeset .hero {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.md-typeset .hero .md-button {
+    margin: 0.5rem;
+}
+
+/* 网格卡片间距 */
+.md-typeset .grid.cards > ul > li {
+    min-height: 150px;
+}
+
+/* 表格行高优化 */
+.md-typeset table th,
+.md-typeset table td {
+    padding: 0.5rem 1rem;
+}
+
+/* 代码块字号 */
+.md-typeset code {
+    font-size: 0.82rem;
+}
+
+/* Tab 切换标签样式 */
+.md-typeset .tabbed-set > .tabbed-content {
+    border: 1px solid var(--md-default-fg-color--lightest);
+    border-radius: 0.2rem;
+    padding: 0.8rem;
+}
