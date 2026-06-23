@@ -1,8 +1,8 @@
 site_name: CASBOT02 二次开发文档
 site_description: CASBOT02 人形机器人 ROS2 二次开发指南
 site_url: https://casbot02.readthedocs.io
-repo_url: https://github.com/YOUR_ORG/casbot02-docs
-repo_name: casbot02-docs
+repo_url: https://github.com/ElvinChan777/casbot02-docs
+repo_name: ElvinChan777/casbot02-docs
 edit_uri: edit/main/docs/
 
 # ============================================================================
@@ -150,7 +150,7 @@ extra:
     provider: mike           # 多版本管理工具
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/YOUR_ORG/casbot02-docs
+      link: https://github.com/ElvinChan777/casbot02-docs
   generator: false
 
 # ============================================================================

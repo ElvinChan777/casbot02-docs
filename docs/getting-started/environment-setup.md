@@ -46,7 +46,7 @@ CASBOT02 的自定义 ROS2 消息包 `crb_ros_msg` 需要预先安装：
 
 # 方式二：从源码编译
 # mkdir -p ~/casbot_ws/src && cd ~/casbot_ws/src
-# git clone https://github.com/YOUR_ORG/crb_ros_msg.git
+# git clone https://github.com/ElvinChan777/crb_ros_msg.git
 # cd .. && colcon build --packages-select crb_ros_msg
 # source install/setup.bash
 ```
